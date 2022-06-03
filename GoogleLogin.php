@@ -1,20 +1,20 @@
 <?php
 // API Documents: https://www.yoncu.com/API/
 define('GOOGLE_TOKEN',[
-	'ClientID'		=> '123121212121-ghtrhrthtrhtrhtrhtrhtthrhrh.apps.googleusercontent.com',
+	'ClientID'	=> '123121212121-ghtrhrthtrhtrhtrhtrhtthrhrh.apps.googleusercontent.com',
 	'ClientSecret'	=> 'GFGFGGFG-gfgfgffgfgfgfgffgfggf',
 	'RedirectUri'	=> 'https://'.$_SERVER["HTTP_HOST"].'/'.trim($_SERVER['SCRIPT_NAME'],'/'),
-	'ScopeList'		=> 'openid profile email https://www.googleapis.com/auth/drive'
+	'ScopeList'	=> 'openid profile email https://www.googleapis.com/auth/drive'
 ]);
 function GOAuth($Action,$Data){
 	$Curl = curl_init('https://www.yoncu.com/API/Tools/GOAuth/'.$Action);
 	curl_setopt_array($Curl,[
 		CURLOPT_RETURNTRANSFER	=> true,
-		CURLOPT_HEADER			=> false,
-	    CURLOPT_HTTPHEADER		=> ['Accept: application/json'],
+		CURLOPT_HEADER		=> false,
+	    	CURLOPT_HTTPHEADER	=> ['Accept: application/json'],
 		CURLOPT_CUSTOMREQUEST	=> 'POST',
-		CURLOPT_POST			=> true,
-		CURLOPT_POSTFIELDS		=> json_encode(array_merge($Data,GOOGLE_TOKEN)),
+		CURLOPT_POST		=> true,
+		CURLOPT_POSTFIELDS	=> json_encode(array_merge($Data,GOOGLE_TOKEN)),
 	]);
 	$Response	= curl_exec($Curl);
 	$HttpCode	= curl_getinfo($Curl,CURLINFO_HTTP_CODE);
