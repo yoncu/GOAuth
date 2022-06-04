@@ -22,16 +22,20 @@ function GOAuth($Action,$Data){
 	if($Json=json_decode($Response,true)){
 		return $Json;
 	}else{
-		return [false,'Blank Data'];
+		return [false,'Blank Response Data'];
 	}
 }
 if(isset($_COOKIE['GOAuth']) and md5(GOOGLE_TOKEN['ClientSecret'].substr($_COOKIE['GOAuth'],32)) == substr($_COOKIE['GOAuth'],0,32)){
 	PrintInfo:
 	setcookie('GOAuth',$_COOKIE['GOAuth']);
 	list($Status,$Info)	= GOAuth('TokenGet',['Email'=>substr($_COOKIE['GOAuth'],32)]);
-	echo 'E-Mail:<br>'.substr($_COOKIE['GOAuth'],32);
-	echo '<br><br>';
-	echo 'Token:<br>'.$Info;
+	if($Status){
+		echo 'E-Mail:<br>'.substr($_COOKIE['GOAuth'],32);
+		echo '<br><br>';
+		echo 'Token:<br>'.$Info['tokendata']['access_token'];
+	}else{
+		echo 'Error: '.$Info;
+	}
 }elseif(isset($_REQUEST['code'])){
 	list($Status,$Info)	= GOAuth('LoginCode',['Code'=>$_REQUEST['code']]);
 	if($Status){
